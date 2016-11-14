@@ -16,10 +16,11 @@ public class CCValidator {
      */
     public static boolean isValid(long number) {
         int sum = 0;
-        if (isValidVendor(number)){
+        
+        if (isValidVendor(number)){                 // checks all parts of luhn 
             sum += sumOfDoubleEvenPlace(number);
             sum += sumOfOddPlace(number);
-            if (sum % 10 == 0){
+            if (sum % 10 == 0){                     // mod 10
                 return true;
             } else{
                 return false;
@@ -31,7 +32,8 @@ public class CCValidator {
 
     public static boolean isValidVendor(long number) {
         long prefix = getPrefix(number, 2);
-        if (prefix == 37){
+        
+        if (prefix == 37){                      // checks if any prefixes match bank vendor ids
             return true;
         } else if ((int)prefix/10 >= 4 && (int)prefix/10 <= 6){
             return true;
@@ -49,7 +51,7 @@ public class CCValidator {
         
         int i;
         
-        if (size % 2 == 0){
+        if (size % 2 == 0){                 // since left to right, must adjust for even/ odd sizes
             i = 1;
         } else{
             i = 2;
@@ -74,14 +76,14 @@ public class CCValidator {
         
         int i;
         
-        if (size % 2 == 0){
+        if (size % 2 == 0){                 // since left to right, must adjust for even/ odd sizes
             i = 2;
         } else{
             i = 1;
         }
         
         long prefix = 0;
-        for (; i <= size; i += 2){  // finds odd prefixes and mod10 to find odd digit and sums
+        for (; i <= size; i += 2){          // finds odd prefixes and mod10 to find odd digit and sums
         prefix = getPrefix(number, i);
         sum += prefix % 10;
         }
