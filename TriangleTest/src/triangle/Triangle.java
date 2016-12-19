@@ -23,31 +23,47 @@ public class Triangle {
     }
 
     public boolean isScalene() {                                                // A scalene triangle has all unequal sides.
-        return (A != B) && (A != C) && (B != C);
+        if (isValid()) {
+            return (A != B) && (A != C) && (B != C);
+        } else {
+            return false;
+        }
     }
 
     public boolean isRight() {                                                  // A right triangle satisfies the Pythagorean theorem.
-        if ((A * A) + (B * B) == (C * C)) {
-            return true;
-        } else if ((A * A) + (C * C) == (B * B)) {
-            return true;
+        if (isValid()) {
+            if ((A * A) + (B * B) == (C * C)) {
+                return true;
+            } else if ((A * A) + (C * C) == (B * B)) {
+                return true;
+            } else {
+                return (B * B) + (C * C) == (A * A);
+            }
         } else {
-            return (B * B) + (C * C) == (A * A);
+            return false;
         }
     }
 
     public boolean isIsosceles() {                                              // An isosceles triangle has TWO equal sides.
-        if (A == B && A != C && B != C) {
-            return true;
-        } else if (A == C && A != C && B != C) {
-            return true;
+        if (isValid()) {
+            if (A == B && A != C && B != C) {
+                return true;
+            } else if (A == C && A != C && B != C) {
+                return true;
+            } else {
+                return (A != B && A != C && B == C);
+            }
         } else {
-            return (A != B && A != C && B == C);
+            return false;
         }
     }
 
     public boolean isEquilateral() {                                            // An equilateral triangle has all equal sides.
-        return (A == B && A == C && B == C);
+        if (isValid()) {
+            return (A == B && A == C && B == C);
+        } else {
+            return false;
+        }
     }
 
     public boolean isValid() {                                                  // Given a Triangle object, see if the Triangle is valid
