@@ -16,29 +16,23 @@ public class CCValidator {
      */
     public static boolean isValid(long number) {
         int sum = 0;
-        
-        if (isValidVendor(number)){                 // checks all parts of luhn 
+
+        if (isValidVendor(number)) {                 // checks all parts of luhn 
             sum += sumOfDoubleEvenPlace(number);
             sum += sumOfOddPlace(number);
-            if (sum % 10 == 0){                     // mod 10
-                return true;
-            } else{
-                return false;
-            }
-        } else{
+            return sum % 10 == 0; // mod 10
+        } else {
             return false;
         }
     }
 
     public static boolean isValidVendor(long number) {
         long prefix = getPrefix(number, 2);
-        
-        if (prefix == 37){                      // checks if any prefixes match bank vendor ids
-            return true;
-        } else if ((int)prefix/10 >= 4 && (int)prefix/10 <= 6){
+
+        if (prefix == 37) {                      // checks if any prefixes match bank vendor ids
             return true;
         } else {
-            return false;
+            return (int) prefix / 10 >= 4 && (int) prefix / 10 <= 6;
         }
     }
 
@@ -48,21 +42,21 @@ public class CCValidator {
     public static int sumOfDoubleEvenPlace(long number) {
         int size = getSize(number);         // number of digits in number
         int sum = 0;                        // sum of even digits
-        
+
         int i;
-        
-        if (size % 2 == 0){                 // since left to right, must adjust for even/ odd sizes
+
+        if (size % 2 == 0) {                 // since left to right, must adjust for even/ odd sizes
             i = 1;
-        } else{
+        } else {
             i = 2;
         }
-        
+
         long prefix = 0;
-        for (; i <= size; i += 2){  // finds even prefixes and mod10 to find even digit
-        prefix = getPrefix(number, i);
-        prefix %= 10;
-        prefix *= 2;
-        sum += getDigit((int)prefix);
+        for (; i <= size; i += 2) {  // finds even prefixes and mod10 to find even digit
+            prefix = getPrefix(number, i);
+            prefix %= 10;
+            prefix *= 2;                // doubles digit and then splits them if they're two digits
+            sum += getDigit((int) prefix);
         }
         return sum;
     }
@@ -73,19 +67,11 @@ public class CCValidator {
     public static int sumOfOddPlace(long number) {
         int size = getSize(number);         // number of digits in number
         int sum = 0;                        // sum of odd digits
-        
-        int i;
-        
-        if (size % 2 == 0){                 // since left to right, must adjust for even/ odd sizes
-            i = 2;
-        } else{
-            i = 1;
-        }
-        
+
         long prefix = 0;
-        for (; i <= size; i += 2){          // finds odd prefixes and mod10 to find odd digit and sums
-        prefix = getPrefix(number, i);
-        sum += prefix % 10;
+        for (; size > 0; size -= 2) {          // finds odd prefixes and mod10 to find odd digit and sums
+            prefix = getPrefix(number, size);
+            sum += prefix % 10;
         }
         return sum;
     }
@@ -112,11 +98,7 @@ public class CCValidator {
      */
     public static boolean prefixMatched(long number, int d) {
 
-        if (getPrefix(number, getSize(d)) == d) {  // compares prefix of number to d and returns according boolean value
-            return true;
-        } else {
-            return false;
-        }
+        return getPrefix(number, getSize(d)) == d; // compares prefix of number to d and returns according boolean value
 
     }
 
